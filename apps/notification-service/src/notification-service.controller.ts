@@ -11,13 +11,13 @@ export class NotificationServiceController {
     return this.notificationServiceService.getHello();
   }
 
-
   @EventPattern('user.created')
-  handleUserCreated(
-    @Payload() data: any,
-  ) {
+  handleUserCreated(data: any) {
+    console.log('Notification Received');
+    console.log(data);
+
     console.log(
-      `SMS SENT TO ${data.email}`,
+      `Sending welcome email to ${data.email}`,
     );
   }
 }
