@@ -14,4 +14,17 @@ export class ApiGatewayController {
       name: 'Melak',
     });
   }
+
+  @Get('event')
+  async event() {
+    this.sandboxClient.emit('user-created', {
+      id: 1,
+      name: 'Melak',
+      email: 'melak@gmail.com',
+    });
+
+    return {
+      message: 'Event Published',
+    };
+  }
 }
