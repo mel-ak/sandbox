@@ -1,25 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../../sandbox/src/app.module';
-import { Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import { UserServiceModule } from './user-service.module';
 
 async function bootstrap() {
   const app =
-  await NestFactory.createMicroservice(
-    AppModule,
-    {
-      transport: Transport.GRPC,
-      options: {
-        package: 'user',
-        protoPath:
-          join(
-            process.cwd(),
-            'libs/shared/src/proto/user.proto',
-          ),
-      },
-    },
-  );
+  await NestFactory.create(UserServiceModule);
 
-  await app.listen();
+  await app.listen(3093);
+  console.log('User Service Running on port 3093');
 }
 bootstrap();

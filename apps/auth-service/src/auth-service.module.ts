@@ -4,6 +4,7 @@ import { AuthServiceService } from './auth-service.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RedisModule } from '@app/redis';
 
 @Module({
   imports: [
@@ -39,6 +40,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+
+    RedisModule
 
   ],
   controllers: [AuthServiceController],

@@ -20,6 +20,8 @@
     "test:e2e": "jest --config ./apps/sandbox/test/jest-e2e.json"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.4",
+    "@grpc/proto-loader": "^0.8.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/microservices": "^11.1.26",
@@ -29,6 +31,7 @@
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^2.0.1",
     "pg": "^8.21.0",
+    "redis": "^5.12.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "typeorm": "^1.0.0"
@@ -80,6 +83,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
+      "^@app/redis(|/.*)$": "<rootDir>/libs/redis/src/$1",
       "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   }
