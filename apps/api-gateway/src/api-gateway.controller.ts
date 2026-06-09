@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
@@ -6,6 +6,9 @@ export class ApiGatewayController {
   constructor(
       @Inject('SANDBOX_SERVICE')
       private readonly sandboxClient: ClientProxy,
+
+      @Inject('AUTH_SERVICE')
+      private readonly authClient: ClientProxy,
     ) {}
 
   @Get()
@@ -26,5 +29,15 @@ export class ApiGatewayController {
     return {
       message: 'Event Published',
     };
+  }
+
+  @Post('register')
+  register(
+    @Body() body: any,
+  ) {
+    return this.authClient.send(
+      'register',
+      body,
+    );
   }
 }

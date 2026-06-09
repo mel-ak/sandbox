@@ -5,6 +5,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+
+    // Register Sandbox Service
     ClientsModule.register([
           {
             name: 'SANDBOX_SERVICE',
@@ -18,6 +20,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             },
           },
         ]),
+
+    // Register Auth Service
+    ClientsModule.register([
+        {
+          name: 'AUTH_SERVICE',
+          transport: Transport.RMQ,
+          options: {
+            urls: ['amqp://localhost:5673'],
+            queue: 'auth_queue',
+            queueOptions: {
+                durable: false,
+              },
+          },
+        },
+      ])
   ],
   controllers: [ApiGatewayController],
   providers: [ApiGatewayService],
