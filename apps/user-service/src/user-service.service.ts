@@ -1,39 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { RedisService } from '@app/redis';
+import * as client from 'prom-client';
 
 @Injectable()
 export class UserServiceService {
 
-  constructor(
-    private readonly redis: RedisService,
-  ) {}
+  private readonly register = new client.Registry()
   
-  async getUser(id: number) {
-    const cacheKey = `user:${id}`;
+  constructor(){
+      client.collectDefaultMetrics({
+          register: this.register
+      })
+  }
+  
 
-    const cached =
-      await this.redis.get(cacheKey);
+  // It collects the following metrics:
+    // - process_cpu_user_seconds_total
+    // - process_resident_memory_bytes
+    // - nodejs_heap_size_total_bytes
+    // - nodejs_heap_size_used_bytes
+    // - nodejs_eventloop_lag_seconds
 
-    if (cached) {
-      console.log('CACHE HIT');
-
-      return cached;
+    getMetrics(){
+        return this.register.metrics();
     }
 
-    console.log('DATABASE HIT');
-
-    const user = {
-      id,
-      name: 'Melak',
-      email: 'melak@example.com',
-    };
-
-    await this.redis.set(
-      cacheKey,
-      user,
-      300,
-    );
-
-    return user;
-  }
+    sayHello(){
+        return 'Hello World!';
+    }
 }
