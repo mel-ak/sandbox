@@ -4,12 +4,30 @@ import * as client from 'prom-client';
 @Injectable()
 export class UserServiceService {
 
-  private readonly register = new client.Registry()
+  public readonly register = new client.Registry()
+  
+  public httpRequestsTotal: client.Counter<string>;
+  public httpRequestDuration: client.Histogram<string>;
   
   constructor(){
       client.collectDefaultMetrics({
           register: this.register
       })
+
+       this.httpRequestsTotal = new client.Counter({
+      name: 'http_requests_total',
+      help: 'Total number of HTTP requests',
+      labelNames: ['method', 'route', 'status_code'],
+      registers: [this.register],
+    });
+
+    this.httpRequestDuration = new client.Histogram({
+      name: 'http_request_duration_seconds',
+      help: 'Request duration in seconds',
+      labelNames: ['method', 'route', 'status_code'],
+      buckets: [0.01, 0.05, 0.1, 0.3, 0.5, 1, 2, 5],
+      registers: [this.register],
+    });
   }
   
 
@@ -26,5 +44,13 @@ export class UserServiceService {
 
     sayHello(){
         return 'Hello World!';
+    }
+
+    getUser(id: string){
+        return `User ${id}`;
+    }
+
+    getUsers(){
+        return ['User 1', 'User 2', 'User 3'];
     }
 }

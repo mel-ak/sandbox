@@ -16,5 +16,16 @@ export class UserServiceController {
   hello(){
       return this.userServiceService.sayHello();
   }
+  
+  @Get('users')
+  getUsers(){
+      return this.userServiceService.getUsers();
+  }
+  
+  @Get(':id')
+  getUser(@Param('id') id: string){
+      return this.userServiceService.getUser(id);
+  }
+
 
 }
